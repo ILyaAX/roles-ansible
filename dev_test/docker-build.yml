@@ -10,6 +10,7 @@
       - 'docker.io'
     workdir: '/opt/app'
     app_name: 'hello-1.0.war'
+    image_name: 'ilyaax/boxfuse'
 
   tasks:
 
@@ -53,7 +54,7 @@
     docker_image:
       build:
         path: '{{ workdir }}'
-      name: 'ilyaax/boxfuse'
+      name: '{{ image_name }}'
       push: true
       source: build
 
