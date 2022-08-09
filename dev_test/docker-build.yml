@@ -54,9 +54,10 @@
       build:
         path: '{{ workdir }}'
       name: 'ilyaax/boxfuse'
+      push: true
       source: build
 
-#  - name: Clear source
-#    file:
-#      state: absent
-#      path: '{{ workdir }}'
+  - name: Clear source
+    file:
+      state: absent
+      path: '{{ workdir }}'
