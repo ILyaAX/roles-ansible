@@ -2,11 +2,11 @@
 - name: Preparing the build-node
   hosts: build
   become: true
-  include_role:
-    name: docker-build
+  roles:
+    - 'docker-build'
 
 - name: Preparing the prod-node
   hosts: prod
   become: true
-  include_role:
-    name: docker-prod
+  roles:
+    - 'docker-prod'
