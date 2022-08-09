@@ -1,2 +1,22 @@
 ---
-# tasks file for server-prod
+- name: Ensure the package is present
+  apt:
+    name: '{{ package }}'
+    state: present
+    cache_valid_time: 10000
+
+- name: Copy webapp-file
+  synchronize:
+    src: '{{ app_path }}'
+    dest: '{{ web_path }}'
+
+- name: Ensure server is started
+  service:
+    name: '{{ package }}'
+    state: started
+
+- name: Clear source
+  file:
+    state: absent
+    path: '{{ app_path }}'
+  delegate_to: localhost

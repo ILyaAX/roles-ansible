@@ -1,2 +1,27 @@
 ---
-# tasks file for server-build
+- name: Make sure the packages are present
+  apt:
+    name: '{{ package }}'
+    state: present
+    cache_valid_time: 10000
+
+- name: Fetch application on git
+  git:
+    repo: '{{ repository }}'
+    dest: '{{ workdir }}'
+
+- name: build webapp
+  shell: mvn clean package
+  args:
+    chdir: '{{ workdir }}'
+
+- name: Fetch webapp-file
+  synchronize:
+    mode: pull
+    src: '{{ workdir }}/target/hello-1.0.war'
+    dest: '{{ workdir }}/hello-1.0.war'
+
+- name: Clear source
+  file:
+    state: absent
+    path: '{{ workdir }}'
