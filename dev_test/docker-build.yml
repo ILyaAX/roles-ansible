@@ -20,7 +20,7 @@
       state: present
       cache_valid_time: 10000
 
-  - name: Install docker-py 
+  - name: Install docker
     pip:
       name: docker
       executable: pip3
@@ -44,7 +44,7 @@
     ansible.builtin.wait_for:
       path: '{{ workdir }}/target/{{ app_name }}'
 
-  - name: Make sure that the Dockerfile for the application container is present
+  - name: Make sure that the Dockerfile for the app image is present
     ansible.builtin.template:
       src: 'Dockerfile.j2'
       dest: '{{ workdir }}/Dockerfile'
