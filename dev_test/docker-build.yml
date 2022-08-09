@@ -62,3 +62,36 @@
     file:
       state: absent
       path: '{{ workdir }}'
+
+- name: Preparing the prod-node
+  hosts: '{{ instanse }}'
+  become: true
+  vars:
+    instanse: prod
+    package:
+      - 'python3-pip'
+      - 'docker.io'
+    image_name: 'ilyaax/boxfuse'
+    app_name: 'boxfuse'
+
+  tasks:
+
+  - name: Make sure the packages are present
+    apt:
+      name: '{{ package }}'
+      state: present
+      cache_valid_time: 10000
+
+  - name: Install docker
+    pip:
+      name: docker
+      executable: pip3
+
+  - name: Make sure the application is running
+    docker_container:
+      name: '{{ app_name }}'
+      image: '{{ image_name }}'
+      auto_remove: true
+      restart_policy: always
+      ports:
+        - '80:8080'
