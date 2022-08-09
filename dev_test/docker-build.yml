@@ -43,12 +43,6 @@
     ansible.builtin.wait_for:
       path: '{{ workdir }}/target/{{ app_name }}'
 
-  - name: Fetch webapp-file
-    fetch:
-      src: '{{ workdir }}/target/{{ app_name }}'
-      dest: '{{ workdir }}/{{ app_name }}'
-      flat: yes
-
   - name: Make sure that the Dockerfile for the application container is present
     ansible.builtin.template:
       src: 'Dockerfile.j2'
@@ -59,7 +53,7 @@
     docker_image:
       build:
         path: '{{ workdir }}'
-        name: ilyaax/boxfuse
+      name: 'ilyaax/boxfuse'
       source: build
 
 #  - name: Clear source
