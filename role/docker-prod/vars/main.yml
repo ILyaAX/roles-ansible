@@ -1,2 +1,6 @@
 ---
-# vars file for docker-prod
+package:
+  - 'python3-pip'
+  - 'docker.io'
+image_name: 'ilyaax/boxfuse'
+app_name: 'boxfuse'

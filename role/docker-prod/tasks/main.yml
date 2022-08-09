@@ -1,2 +1,19 @@
 ---
-# tasks file for docker-prod
+- name: Make sure the packages are present
+  apt:
+    name: '{{ package }}'
+    state: present
+    cache_valid_time: 10000
+
+- name: Install docker
+  pip:
+    name: docker
+    executable: pip3
+
+- name: Make sure the application is running
+  docker_container:
+    name: '{{ app_name }}'
+    image: '{{ image_name }}'
+    auto_remove: true
+    ports:
+      - '80:8080'

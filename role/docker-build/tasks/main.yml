@@ -1,2 +1,49 @@
 ---
-# tasks file for docker-build
+- name: Make sure the packages are present
+  apt:
+    name: '{{ package }}'
+    state: present
+    cache_valid_time: 10000
+
+- name: Install docker
+  pip:
+    name: docker
+    executable: pip3
+
+- name: Fetch application on git
+  git:
+    repo: '{{ repository }}'
+    dest: '{{ workdir }}'
+
+- name: Creating a web application in a maven container
+  docker_container:
+    name: maven_build
+    image: maven:3.3-jdk-8
+    volumes:
+      - '{{ workdir }}:/usr/src/app'
+    auto_remove: true
+    working_dir: /usr/src/app
+    command: 'mvn clean install'
+
+- name: Wait for the artifact to be created
+  ansible.builtin.wait_for:
+    path: '{{ workdir }}/target/{{ app_name }}'
+
+- name: Make sure that the Dockerfile for the app image is present
+  ansible.builtin.template:
+    src: 'Dockerfile.j2'
+    dest: '{{ workdir }}/Dockerfile'
+    mode: '0644'
+
+- name: Build an image app
+  docker_image:
+    build:
+      path: '{{ workdir }}'
+    name: '{{ image_name }}'
+    push: true
+    source: build
+
+- name: Clear source
+  file:
+    state: absent
+    path: '{{ workdir }}'

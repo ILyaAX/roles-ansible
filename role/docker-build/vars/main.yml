@@ -1,2 +1,9 @@
 ---
-# vars file for docker-build
+repository: 'https://github.com/boxfuse/boxfuse-sample-java-war-hello.git'
+package:
+  - 'python3-pip'      
+  - 'git'
+  - 'docker.io'
+workdir: '/opt/app'
+app_name: 'hello-1.0.war'
+image_name: 'ilyaax/boxfuse'
