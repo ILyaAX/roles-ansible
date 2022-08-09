@@ -91,7 +91,7 @@
     docker_container:
       name: '{{ app_name }}'
       image: '{{ image_name }}'
-      auto_remove: true
+#      auto_remove: true
       restart_policy: always
       ports:
         - '80:8080'
